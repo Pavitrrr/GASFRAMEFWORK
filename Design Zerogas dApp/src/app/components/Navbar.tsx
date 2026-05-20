@@ -131,25 +131,28 @@ export function Navbar() {
               <button
                 onClick={handleConnectWallet}
                 disabled={isConnecting}
-                className="hidden sm:flex group px-5 py-2 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold items-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_20px_rgba(124,58,237,0.35)] relative overflow-hidden disabled:opacity-70 text-sm"
+                className="flex group px-3 sm:px-5 py-2 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold items-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_20px_rgba(124,58,237,0.35)] relative overflow-hidden disabled:opacity-70 text-sm"
               >
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                 {isConnecting
                   ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   : <Wallet className="w-4 h-4 relative" />}
-                <span className="relative">{isConnecting ? 'Connecting...' : 'Connect Wallet'}</span>
+                <span className="relative hidden sm:inline">{isConnecting ? 'Connecting...' : 'Connect Wallet'}</span>
               </button>
             </div>
           ) : (
-            /* Not onboarded — original connect wallet button */
+            /* Not onboarded — connect wallet button works on all screen sizes */
             <>
-              <button className="hidden sm:flex group px-6 py-2.5 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold items-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_20px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_24px_rgba(124,58,237,0.45)] relative overflow-hidden">
+              <button
+                onClick={handleConnectWallet}
+                disabled={isConnecting}
+                className="flex group px-3 sm:px-6 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold items-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_20px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_24px_rgba(124,58,237,0.45)] relative overflow-hidden disabled:opacity-70"
+              >
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                <Wallet className="w-4 h-4 relative" />
-                <span className="relative">Connect Wallet</span>
-              </button>
-              <button className="sm:hidden w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground flex items-center justify-center shadow-[0_4px_20px_rgba(124,58,237,0.35)]">
-                <Wallet className="w-4 h-4" />
+                {isConnecting
+                  ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin relative" />
+                  : <Wallet className="w-4 h-4 relative" />}
+                <span className="relative hidden sm:inline">{isConnecting ? 'Connecting...' : 'Connect Wallet'}</span>
               </button>
             </>
           )}
