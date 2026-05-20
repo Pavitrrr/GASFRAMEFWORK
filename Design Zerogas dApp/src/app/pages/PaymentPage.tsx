@@ -306,6 +306,30 @@ export function PaymentPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Failed overlay */}
+      <AnimatePresence>
+        {failed && (
+          <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+            className="fixed inset-0 z-[500] flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none">
+            <motion.div initial={{ scale:0, y:20 }} animate={{ scale:1, y:0 }} exit={{ scale:0, opacity:0 }}
+              transition={{ type:'spring', stiffness:300, damping:20 }}
+              className="rounded-3xl p-10 flex flex-col items-center gap-5 pointer-events-auto max-w-sm mx-4"
+              style={{ background:'linear-gradient(135deg,rgba(20,5,5,0.98),rgba(10,5,5,0.98))', boxShadow:'0 0 80px rgba(239,68,68,0.3),0 0 0 1px rgba(239,68,68,0.2)' }}>
+              <motion.div
+                animate={{ scale:[1,1.1,1], boxShadow:['0 0 0px #EF4444','0 0 30px #EF4444','0 0 0px #EF4444'] }}
+                transition={{ duration:1.5, repeat:2 }}
+                className="w-24 h-24 rounded-full bg-red-500/20 flex items-center justify-center">
+                <span className="text-5xl">⚠️</span>
+              </motion.div>
+              <div className="text-center">
+                <p className="text-2xl font-extrabold text-white">Transaction Failed</p>
+                <p className="text-sm text-red-300 mt-2 leading-relaxed">{failed}</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
