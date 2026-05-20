@@ -128,18 +128,18 @@ export function ProfilePage() {
     ? `https://zerogas.xyz/${walletAddress}`
     : 'https://zerogas.xyz/';
 
-  // Real stats — only show data if wallet connected, otherwise zeros
-  const isConnected = !!walletAddress;
-  const userStats = [
-    { label: 'Certificates', value: isConnected ? user.settings?.compactMode ? '12' : '0' : '0' },
-    { label: 'Skills',       value: isConnected ? '0' : '0' },
-    { label: 'Avg Score',    value: isConnected ? '—' : '—' },
-    { label: 'Achievements', value: isConnected ? '0' : '0' },
-  ];
+  // Certificates and achievements come from on-chain data only.
+  // New users start with empty arrays — data populates when they claim badges.
+  // TODO: replace with real on-chain fetch when contract is deployed.
+  const userCertificates: typeof certificates = [];
+  const userAchievements: typeof achievements = [];
 
-  // Only show certificates/achievements if wallet is connected
-  const userCertificates = isConnected ? certificates : [];
-  const userAchievements = isConnected ? achievements : [];
+  const userStats = [
+    { label: 'Certificates', value: String(userCertificates.length) },
+    { label: 'Skills',       value: String(new Set(userCertificates.map(c => c.skill)).size) || '0' },
+    { label: 'Avg Score',    value: userCertificates.length > 0 ? Math.round(userCertificates.reduce((a, c) => a + c.score, 0) / userCertificates.length) + '%' : '—' },
+    { label: 'Achievements', value: String(userAchievements.filter(a => !a.locked).length) },
+  ];
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(profileUrl);
@@ -251,7 +251,7 @@ export function ProfilePage() {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-success/20 border border-success/40">
             <Fuel className="w-4 h-4 text-success" />
             <span className="text-success font-semibold">
-              {isConnected ? 'Total gas saved: 0.000 ETH via UGF' : 'Connect wallet to track gas savings'}
+              {walletAddress ? 'Total gas saved: 0.000 ETH via UGF' : 'Connect wallet to track gas savings'}
             </span>
           </div>
         </div>
@@ -279,7 +279,7 @@ export function ProfilePage() {
               <div className="text-center py-16 text-muted-foreground">
                 <div className="text-5xl mb-4">🏅</div>
                 <p className="font-semibold text-lg mb-2">No certificates yet</p>
-                <p className="text-sm">{isConnected ? 'Claim your first badge to earn a certificate!' : 'Connect your wallet to see your certificates'}</p>
+                <p className="text-sm">{walletAddress ? 'Claim your first badge to earn a certificate!' : 'Connect your wallet to see your certificates'}</p>
               </div>
             ) : userCertificates.map((cert, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}>
@@ -314,7 +314,7 @@ export function ProfilePage() {
               <div className="col-span-4 text-center py-16 text-muted-foreground">
                 <div className="text-5xl mb-4">🏆</div>
                 <p className="font-semibold text-lg mb-2">No achievements yet</p>
-                <p className="text-sm">{isConnected ? 'Start claiming badges to unlock achievements!' : 'Connect your wallet to see your achievements'}</p>
+                <p className="text-sm">{walletAddress ? 'Start claiming badges to unlock achievements!' : 'Connect your wallet to see your achievements'}</p>
               </div>
             ) : userAchievements.map((a, i) => (
               <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }}>
