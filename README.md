@@ -1,4 +1,4 @@
-# SkillStamp 🎓
+# Zerogas🎓
 
 > Gasless on-chain skill certification. Powered by UGF on Base Sepolia.
 
