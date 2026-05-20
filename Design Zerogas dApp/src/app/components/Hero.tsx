@@ -48,8 +48,8 @@ export function Hero() {
             On-Chain
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10">
-            SkillStamp is the future of professional certification. Earn, own, and showcase verified
-            credentials as blockchain-backed NFTs.
+            ZeroGas is the future of on-chain skill verification. Earn, own, and showcase verified
+            credentials as soulbound NFTs — completely gasless via UGF.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="group px-8 py-4 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-bold text-lg flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all duration-200 shadow-[0_4px_20px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_24px_rgba(124,58,237,0.45)] relative overflow-hidden">

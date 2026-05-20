@@ -90,7 +90,7 @@ export function OnboardingModal() {
                 style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%)' }}>
                 <Sparkles className="w-7 h-7 text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-1">Welcome to SkillStamp</h2>
+              <h2 className="text-2xl font-bold text-white mb-1">Welcome to ZeroGas</h2>
               <p className="text-sm text-white/50">Set up your profile to get started</p>
             </div>
 

@@ -1,6 +1,6 @@
-# SkillStamp - Web3 Skill Certification dApp
+# ZeroGas — Prove Skills. On-Chain. Gasless.
 
-A premium dark crypto UI for on-chain skill certification, powered by User Generated Funds (UGF) for gasless transactions.
+A Web3 dApp for on-chain skill certification powered by UGF (User Generated Funds) for gasless transactions on Base Sepolia. Users pay gas with TYI Mock USD — no ETH needed.
 
 ## Features
 
