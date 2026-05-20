@@ -1,14 +1,8 @@
 import { Logo } from './Logo';
 import { Link } from 'react-router';
-import { Github, Twitter, MessageCircle } from 'lucide-react';
+import { Github } from 'lucide-react';
 
 export function Footer() {
-  const socialLinks = [
-    { icon: Twitter,       href: '#', label: 'Twitter'  },
-    { icon: Github,        href: '#', label: 'GitHub'   },
-    { icon: MessageCircle, href: '#', label: 'Discord'  },
-  ];
-
   const platformLinks = [
     { label: 'Claim Badges', path: '/claim'       },
     { label: 'Leaderboard',  path: '/leaderboard' },
@@ -29,12 +23,11 @@ export function Footer() {
               powered by User Generated Funds on Base Sepolia.
             </p>
             <div className="flex gap-3 mt-5">
-              {socialLinks.map((s, i) => (
-                <a key={i} href={s.href} aria-label={s.label}
-                  className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 transition-all">
-                  <s.icon className="w-4 h-4 text-muted-foreground" />
-                </a>
-              ))}
+              <a href="https://github.com/Pavitrrr/GASFRAMEFWORK" target="_blank" rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 transition-all">
+                <Github className="w-4 h-4 text-muted-foreground hover:text-primary transition-colors" />
+              </a>
             </div>
           </div>
 
