@@ -26,6 +26,7 @@ export function PaymentPage() {
   const [ugfProgress, setUgfProgress] = useState<UGFProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cancelled, setCancelled] = useState(false);
+  const [failed, setFailed] = useState<string | null>(null);
 
   const isSending = ugfProgress !== null && ugfProgress.step !== 'done' && ugfProgress.step !== 'error';
   const isDone = ugfProgress?.step === 'done';
