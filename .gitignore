@@ -3,10 +3,14 @@ logs
 *.log
 npm-debug.log*
 
+# Dependencies
 node_modules
+
+# Build outputs
 dist
 dist-ssr
 *.local
+Design Zerogas dApp/dist/
 
 # Editor
 .vscode/*
@@ -22,5 +26,11 @@ dist-ssr
 artifacts/
 cache/
 
-# Build outputs
-Design Zerogas dApp/dist/
+# Root-level old app files (app lives in Design Zerogas dApp/)
+index.html
+vite.config.js
+eslint.config.js
+package.json
+package-lock.json
+hardhat.config.cjs
+hardhat.config.js
