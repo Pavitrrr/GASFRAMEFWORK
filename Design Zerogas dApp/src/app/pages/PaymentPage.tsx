@@ -36,10 +36,25 @@ export function PaymentPage() {
     ? UGF_STEPS.findIndex(s => s.key === ugfProgress.step)
     : -1;
 
-  const resetForm = () => { setUgfProgress(null); setAmount(''); setRecipient(''); setError(null); };
+  const resetForm = () => { setUgfProgress(null); setAmount(''); setRecipient(''); setError(null); setFailed(null); };
+
+  const handleError = (err: unknown) => {
+    const e = err as { code?: number; message?: string };
+    setUgfProgress(null);
+    if (e.code === 4001) {
+      setCancelled(true);
+      setTimeout(() => setCancelled(false), 3500);
+    } else {
+      const msg = (e.message ?? '').includes('500') || (e.message ?? '').includes('HTTP')
+        ? 'Insufficient TYI Mock USD balance. Get free tokens at universalgasframework.com/faucets'
+        : (e.message ?? 'Transaction failed. Please try again.');
+      setFailed(msg);
+      setTimeout(() => setFailed(null), 4500);
+    }
+  };
 
   const handleSend = async () => {
-    setError(null);
+    setError(null); setFailed(null);
     if (!amount || !recipient) return;
     if (!recipient.startsWith('0x') || recipient.length !== 42) {
       setError('Invalid address. Must be a valid 0x... Ethereum address.');
@@ -47,23 +62,15 @@ export function PaymentPage() {
     }
     try {
       await sendETHViaUGF(recipient, amount, (p) => setUgfProgress(p));
-    } catch (err: unknown) {
-      const e = err as { code?: number; message?: string };
-      if (e.code === 4001) { setCancelled(true); setTimeout(() => setCancelled(false), 3000); setUgfProgress(null); }
-      else { setError(e.message ?? 'Transaction failed.'); setUgfProgress(null); }
-    }
+    } catch (err) { handleError(err); }
   };
 
   const handleContribute = async () => {
-    setError(null);
+    setError(null); setFailed(null);
     if (!amount) return;
     try {
       await contributeToUGFPool(UGF_POOL, amount, (p) => setUgfProgress(p));
-    } catch (err: unknown) {
-      const e = err as { code?: number; message?: string };
-      if (e.code === 4001) { setCancelled(true); setTimeout(() => setCancelled(false), 3000); setUgfProgress(null); }
-      else { setError(e.message ?? 'Transaction failed.'); setUgfProgress(null); }
-    }
+    } catch (err) { handleError(err); }
   };
 
   const explorerUrl = txHash ? `https://sepolia.basescan.org/tx/${txHash}` : null;
