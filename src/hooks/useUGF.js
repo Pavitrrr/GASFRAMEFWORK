@@ -6,7 +6,7 @@ import {
   BASE_SEPOLIA_CHAIN_TYPE,
   TYI_USD_PAYMENT_COIN,
 } from "@tychilabs/ugf-testnet-js";
-import { SKILLSTAMP_ABI, CONTRACT_ADDRESS } from "../contract/abi";
+import { ZEROGAS_ABI as SKILLSTAMP_ABI, CONTRACT_ADDRESS } from "../contract/abi";
 
 /**
  * Hook that wraps the full UGF remote transaction lifecycle:
