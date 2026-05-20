@@ -119,7 +119,6 @@ export function ProfilePage() {
   const [editAvatar, setEditAvatar] = useState(user.avatar);
   const [copied, setCopied] = useState(false);
 
-  // Only show real wallet if connected, otherwise show placeholder
   const walletAddress = user.walletAddress || null;
   const shortAddress = walletAddress
     ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
@@ -129,7 +128,18 @@ export function ProfilePage() {
     ? `https://zerogas.xyz/${walletAddress}`
     : 'https://zerogas.xyz/';
 
-  // QR uses the profile URL as seed for deterministic pattern
+  // Real stats — only show data if wallet connected, otherwise zeros
+  const isConnected = !!walletAddress;
+  const userStats = [
+    { label: 'Certificates', value: isConnected ? user.settings?.compactMode ? '12' : '0' : '0' },
+    { label: 'Skills',       value: isConnected ? '0' : '0' },
+    { label: 'Avg Score',    value: isConnected ? '—' : '—' },
+    { label: 'Achievements', value: isConnected ? '0' : '0' },
+  ];
+
+  // Only show certificates/achievements if wallet is connected
+  const userCertificates = isConnected ? certificates : [];
+  const userAchievements = isConnected ? achievements : [];
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(profileUrl);
@@ -223,7 +233,7 @@ export function ProfilePage() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {stats.map((stat, i) => (
+          {userStats.map((stat, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
               <GlassCard className="p-6 text-center">
                 <div className="text-4xl mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
@@ -240,7 +250,9 @@ export function ProfilePage() {
         <div className="mb-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-success/20 border border-success/40">
             <Fuel className="w-4 h-4 text-success" />
-            <span className="text-success font-semibold">Total gas saved: 0.042 ETH via UGF</span>
+            <span className="text-success font-semibold">
+              {isConnected ? 'Total gas saved: 0.000 ETH via UGF' : 'Connect wallet to track gas savings'}
+            </span>
           </div>
         </div>
 
@@ -263,7 +275,13 @@ export function ProfilePage() {
         {/* Content */}
         {activeTab === 'certificates' ? (
           <div className="space-y-6">
-            {certificates.map((cert, i) => (
+            {userCertificates.length === 0 ? (
+              <div className="text-center py-16 text-muted-foreground">
+                <div className="text-5xl mb-4">🏅</div>
+                <p className="font-semibold text-lg mb-2">No certificates yet</p>
+                <p className="text-sm">{isConnected ? 'Claim your first badge to earn a certificate!' : 'Connect your wallet to see your certificates'}</p>
+              </div>
+            ) : userCertificates.map((cert, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}>
                 <GlassCard className="p-6 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-[2px]"
@@ -292,7 +310,13 @@ export function ProfilePage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {achievements.map((a, i) => (
+            {userAchievements.length === 0 ? (
+              <div className="col-span-4 text-center py-16 text-muted-foreground">
+                <div className="text-5xl mb-4">🏆</div>
+                <p className="font-semibold text-lg mb-2">No achievements yet</p>
+                <p className="text-sm">{isConnected ? 'Start claiming badges to unlock achievements!' : 'Connect your wallet to see your achievements'}</p>
+              </div>
+            ) : userAchievements.map((a, i) => (
               <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }}>
                 <GlassCard className={`p-6 text-center ${a.locked ? 'opacity-50 grayscale' : ''}`}
                   style={!a.locked ? { border: `2px solid ${a.color}`, boxShadow: `0 0 20px ${a.color}40` } : {}}>

@@ -11,6 +11,16 @@ export interface UserSettings {
   animationsEnabled: boolean;
 }
 
+export interface UserNotification {
+  id: number;
+  type: 'badge' | 'achievement' | 'security' | 'system' | 'reward' | 'payment';
+  title: string;
+  message: string;
+  time: string;
+  read: boolean;
+  icon: string;
+}
+
 export interface UserProfile {
   username: string;
   avatar: string;
@@ -18,6 +28,7 @@ export interface UserProfile {
   isConnected: boolean;
   hasOnboarded: boolean;
   settings: UserSettings;
+  notifications: UserNotification[];
 }
 
 interface UserContextType {
@@ -30,6 +41,8 @@ interface UserContextType {
   completeOnboarding: () => void;
   updateProfile: (updates: Partial<Pick<UserProfile, 'username' | 'avatar'>>) => void;
   updateSettings: (updates: Partial<UserSettings>) => void;
+  updateNotifications: (notifications: UserNotification[]) => void;
+  addNotification: (n: Omit<UserNotification, 'id' | 'time' | 'read'>) => void;
 }
 
 const STORAGE_KEY = 'skillstamp-user';
@@ -49,6 +62,7 @@ const defaultUser: UserProfile = {
   isConnected: false,
   hasOnboarded: false,
   settings: defaultSettings,
+  notifications: [], // starts empty — per user
 };
 
 export const AVATAR_OPTIONS = ['🦊', '🐉', '🦁', '🐺', '🦅', '🐬', '🦋', '🐙', '🦄', '🐸', '🤖', '👾'];
@@ -71,6 +85,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         return {
           ...defaultUser, ...parsed,
           settings: { ...defaultSettings, ...(parsed.settings || {}), theme: migratedTheme },
+          notifications: parsed.notifications ?? [], // per-user, starts empty
         };
       }
       return defaultUser;
@@ -160,10 +175,20 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser((p) => ({ ...p, ...updates }));
   const updateSettings = (updates: Partial<UserSettings>) =>
     setUser((p) => ({ ...p, settings: { ...p.settings, ...updates } }));
+  const updateNotifications = (notifications: UserNotification[]) =>
+    setUser((p) => ({ ...p, notifications }));
+  const addNotification = (n: Omit<UserNotification, 'id' | 'time' | 'read'>) =>
+    setUser((p) => ({
+      ...p,
+      notifications: [
+        { ...n, id: Date.now(), time: 'Just now', read: false },
+        ...p.notifications,
+      ],
+    }));
 
   return (
     <UserContext.Provider
-      value={{ user, setUsername, setAvatar, connectWallet, connectMetaMask, disconnectWallet, completeOnboarding, updateProfile, updateSettings }}
+      value={{ user, setUsername, setAvatar, connectWallet, connectMetaMask, disconnectWallet, completeOnboarding, updateProfile, updateSettings, updateNotifications, addNotification }}
     >
       {children}
     </UserContext.Provider>

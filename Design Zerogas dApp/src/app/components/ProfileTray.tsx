@@ -190,7 +190,7 @@ export function ProfileTray({ isOpen, onClose, anchorRef }: ProfileTrayProps) {
                   <TrayItem icon={<User className="w-4 h-4"/>} iconColor={currentVariant.accent} label="My Profile" sub="View badges & achievements" onClick={() => handleNavigate('/profile')} arrow />
                   <TrayItem icon={<Pencil className="w-4 h-4"/>} iconColor="#22D3EE" label="Edit Profile" sub="Change username & avatar" onClick={() => { setEditUsername(user.username); setEditAvatar(user.avatar); setPanel('editProfile'); }} arrow />
                   <TrayItem icon={<Wallet className="w-4 h-4"/>} iconColor="#A78BFA" label="Transaction History" sub="View on-chain activity" onClick={() => handleNavigate('/history')} arrow />
-                  <TrayItem icon={<Bell className="w-4 h-4"/>} iconColor="#FBBF24" label="Notifications" sub="Badge alerts & updates" badge="3" onClick={() => handleNavigate('/notifications')} arrow />
+                  <TrayItem icon={<Bell className="w-4 h-4"/>} iconColor="#FBBF24" label="Notifications" sub="Badge alerts & updates" badge={user.notifications?.filter(n => !n.read).length > 0 ? String(user.notifications.filter(n => !n.read).length) : undefined} onClick={() => handleNavigate('/notifications')} arrow />
                   <TrayItem icon={<Shield className="w-4 h-4"/>} iconColor="#34D399" label="Security" sub="Manage wallet & permissions" onClick={() => handleNavigate('/security')} arrow />
                   <TrayItem icon={<Settings className="w-4 h-4"/>} iconColor="#94A3B8" label="Settings" sub="Themes, wallpapers & more" onClick={() => setPanel('settings')} arrow />
                 </div>
