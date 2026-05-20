@@ -1,4 +1,4 @@
-export const SKILLSTAMP_ABI = [
+export const ZEROGAS_ABI = [
   // Quiz creation
   "function createQuiz(string title, string skill, string questionsJson, uint8 passingScore) external returns (uint256)",
   "function toggleQuiz(uint256 quizId) external",
