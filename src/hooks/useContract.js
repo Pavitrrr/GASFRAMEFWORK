@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ethers } from "ethers";
 import { useWallet } from "../context/WalletContext";
-import { SKILLSTAMP_ABI, CONTRACT_ADDRESS } from "../contract/abi";
+import { ZEROGAS_ABI as SKILLSTAMP_ABI, CONTRACT_ADDRESS } from "../contract/abi";
 
 const RPC_URL = import.meta.env.VITE_RPC_URL || "https://sepolia.base.org";
 
