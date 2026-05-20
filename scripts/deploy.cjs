@@ -1,26 +1,29 @@
 const hre = require("hardhat");
 
 async function main() {
-  console.log("Deploying SkillStamp contract to Base Sepolia...");
+  console.log("Deploying SkillStamp to Base Sepolia...");
 
   const [deployer] = await hre.ethers.getSigners();
-  console.log("Deploying with account:", deployer.address);
+  console.log("Deployer:", deployer.address);
 
   const balance = await hre.ethers.provider.getBalance(deployer.address);
-  console.log("Account balance:", hre.ethers.formatEther(balance), "ETH");
+  console.log("Balance:", hre.ethers.formatEther(balance), "ETH");
+
+  if (balance === 0n) {
+    console.error("❌ No ETH in deployer wallet. Get Base Sepolia ETH from https://www.alchemy.com/faucets/base-sepolia");
+    process.exit(1);
+  }
 
   const SkillStamp = await hre.ethers.getContractFactory("SkillStamp");
-  const skillStamp = await SkillStamp.deploy();
+  const contract = await SkillStamp.deploy();
+  await contract.waitForDeployment();
 
-  await skillStamp.waitForDeployment();
-
-  const address = await skillStamp.getAddress();
+  const address = await contract.getAddress();
   console.log("✅ SkillStamp deployed to:", address);
-  console.log("\nAdd this to your .env file:");
+  console.log("\nPaste this into skillstamp/.env:");
+  console.log(`VITE_CONTRACT_ADDRESS=${address}`);
+  console.log("\nAlso paste into 'Design Zerogas dApp/.env':");
   console.log(`VITE_CONTRACT_ADDRESS=${address}`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main().catch(e => { console.error(e); process.exitCode = 1; });
